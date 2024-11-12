@@ -1,0 +1,46 @@
+{
+  "name": "portable-image-png",
+  "version": "0.0.1",
+  "description": "Lightweight PNG loader/saver written from scratch, supporting palette/indexed mode (keeping palette and index informations).",
+  "main": "lib/Png.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "crc-32": "^1.2.2",
+    "portable-image": "^0.0.2",
+    "stream-kit": "^0.5.4"
+  },
+  "scripts": {
+    "test": "tea-time -R dot"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cronvel/portable-image-png.git"
+  },
+  "keywords": [
+    "png",
+    "rgb",
+    "rgba",
+    "grayscale",
+    "alpha",
+    "indexed",
+    "palette",
+    "8-bit"
+  ],
+  "author": "Cédric Ronvel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cronvel/portable-image-png/issues"
+  },
+  "copyright": {
+    "title": "Portable Image Png",
+    "years": [
+      2024
+    ],
+    "owner": "Cédric Ronvel"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
