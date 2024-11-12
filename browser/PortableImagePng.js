@@ -279,7 +279,7 @@ Png.prototype.decode = async function( buffer , options = {} ) {
 		let chunkType = readableBuffer.readUtf8( 4 ) ;
 		//let chunkType = readableBuffer.readString( 4 , 'latin1' ) ;
 
-		console.log( "Found chunk: '" + chunkType + "' of size: " + chunkSize ) ;
+		//console.log( "Found chunk: '" + chunkType + "' of size: " + chunkSize ) ;
 
 		if ( chunkDecoders[ chunkType ] ) {
 			let chunkBuffer = readableBuffer.readBuffer( chunkSize , true ) ;
@@ -396,7 +396,7 @@ Png.prototype.encode = async function( options = {} ) {
 	// Finalize by sending the IEND chunk to end the file
 	chunks.push( IEND_CHUNK_BUFFER ) ;
 
-	console.log( "Chunks:" , chunks ) ;
+	//console.log( "Chunks:" , chunks ) ;
 	return Buffer.concat( chunks ) ;
 } ;
 
@@ -426,7 +426,7 @@ Png.prototype.generateChunkFromData = function( chunkType , dataBuffer ) {
 	// of a single buffer containing chunkType + dataBuffer.
 	var chunkComputedCrc32 = crc32.buf( dataBuffer , crc32.bstr( chunkType ) ) ;
 	chunkBuffer.writeInt32BE( chunkComputedCrc32 , chunkBuffer.length - 4 ) ;
-	console.log( "Generated chunk: '" + chunkType + "' of size: " + dataBuffer.length + " and CRC-32: " + chunkComputedCrc32 ) ;
+	//console.log( "Generated chunk: '" + chunkType + "' of size: " + dataBuffer.length + " and CRC-32: " + chunkComputedCrc32 ) ;
 
 	return chunkBuffer ;
 } ;
@@ -447,7 +447,7 @@ chunkDecoders.IHDR = function( readableBuffer , options ) {
 
 	this.computeBitsPerPixel() ;
 
-	console.log( "After IHDR:" , this ) ;
+	//console.log( "After IHDR:" , this ) ;
 } ;
 
 
@@ -486,7 +486,7 @@ chunkDecoders.PLTE = function( readableBuffer , options ) {
 		] ;
 	}
 
-	console.log( "PLTE:" , this.palette ) ;
+	//console.log( "PLTE:" , this.palette ) ;
 } ;
 
 
@@ -517,14 +517,14 @@ chunkDecoders.tRNS = function( readableBuffer , options ) {
 			let g = Math.min( 255 , readableBuffer.readUInt16BE() << ( 8 - this.bitDepth ) ) ;
 			let b = Math.min( 255 , readableBuffer.readUInt16BE() << ( 8 - this.bitDepth ) ) ;
 			this.transparencyColorKey = [ r , g , b ] ;
-			console.log( "tRNS:" , this.transparencyColorKey ) ;
+			//console.log( "tRNS:" , this.transparencyColorKey ) ;
 			break ;
 		}
 		case Png.COLOR_TYPE_GRAYSCALE :
 		case Png.COLOR_TYPE_GRAYSCALE_ALPHA : {
 			let grayscale = Math.min( 255 , readableBuffer.readUInt16BE() << ( 8 - this.bitDepth ) ) ;
 			this.transparencyColorKey = [ grayscale ] ;
-			console.log( "tRNS:" , this.transparencyColorKey ) ;
+			//console.log( "tRNS:" , this.transparencyColorKey ) ;
 			break ;
 		}
 		case Png.COLOR_TYPE_INDEXED : {
@@ -534,7 +534,7 @@ chunkDecoders.tRNS = function( readableBuffer , options ) {
 				this.palette[ index ++ ][ 3 ] = readableBuffer.readUInt8() ;
 			}
 
-			console.log( "tRNS:" , this.palette ) ;
+			//console.log( "tRNS:" , this.palette ) ;
 			break ;
 		}
 	}
@@ -580,19 +580,19 @@ chunkDecoders.bKGD = function( readableBuffer , options ) {
 			let g = Math.min( 255 , readableBuffer.readUInt16BE() << ( 8 - this.bitDepth ) ) ;
 			let b = Math.min( 255 , readableBuffer.readUInt16BE() << ( 8 - this.bitDepth ) ) ;
 			this.backgroundColor = [ r , g , b ] ;
-			console.log( "bKGD:" , this.backgroundColor ) ;
+			//console.log( "bKGD:" , this.backgroundColor ) ;
 			break ;
 		}
 		case Png.COLOR_TYPE_GRAYSCALE :
 		case Png.COLOR_TYPE_GRAYSCALE_ALPHA : {
 			let grayscale = Math.min( 255 , readableBuffer.readUInt16BE() << ( 8 - this.bitDepth ) ) ;
 			this.backgroundColor = [ grayscale , grayscale , grayscale ] ;
-			console.log( "bKGD:" , this.backgroundColor ) ;
+			//console.log( "bKGD:" , this.backgroundColor ) ;
 			break ;
 		}
 		case Png.COLOR_TYPE_INDEXED : {
 			this.backgroundColorIndex = readableBuffer.readUInt8() ;
-			console.log( "bKGD:" , this.backgroundColorIndex ) ;
+			//console.log( "bKGD:" , this.backgroundColorIndex ) ;
 			break ;
 		}
 	}
@@ -612,7 +612,7 @@ chunkEncoders.bKGD = function( options ) {
 
 chunkDecoders.IDAT = function( readableBuffer , options ) {
 	this.idatBuffers.push( readableBuffer.buffer ) ;
-	console.log( "Raw IDAT:" , readableBuffer.buffer , readableBuffer.buffer.length ) ;
+	//console.log( "Raw IDAT:" , readableBuffer.buffer , readableBuffer.buffer.length ) ;
 } ;
 
 
@@ -626,7 +626,7 @@ chunkEncoders.IDAT = async function( options ) {
 		throw new Error( "Interlace methods are unsupported (IDAT): " + this.interlaceMethod ) ;
 	}
 
-	console.log( "Creating IDAT with bits per pixel / bit depth: " + this.bitsPerPixel + " / " + this.bitDepth ) ;
+	//console.log( "Creating IDAT with bits per pixel / bit depth: " + this.bitsPerPixel + " / " + this.bitDepth ) ;
 
 	var pixelBufferLineByteLength = this.width * this.decodedBytesPerPixel ;
 	var lineByteLength = 1 + Math.ceil( this.width * this.bitsPerPixel / 8 ) ;
@@ -648,7 +648,7 @@ chunkEncoders.IDAT = async function( options ) {
 	}
 
 	var compressedBuffer = await deflate( writableBuffer.getBuffer( true ) ) ;
-	console.log( "Compressed IDAT:" , compressedBuffer , compressedBuffer.length ) ;
+	//console.log( "Compressed IDAT:" , compressedBuffer , compressedBuffer.length ) ;
 
 	return compressedBuffer ;
 } ;
@@ -657,7 +657,7 @@ chunkEncoders.IDAT = async function( options ) {
 
 chunkDecoders.IEND = function() {
 	this.iendReceived = true ;
-	console.log( "IEND" ) ;
+	//console.log( "IEND" ) ;
 } ;
 
 
@@ -677,7 +677,7 @@ Png.prototype.generateImageData = async function() {
 
 	var compressedBuffer = Buffer.concat( this.idatBuffers ) ;
 	var buffer = await inflate( compressedBuffer ) ;
-	console.log( "Decompressed IDAT:" , buffer , buffer.length ) ;
+	//console.log( "Decompressed IDAT:" , buffer , buffer.length ) ;
 
 	var lineByteLength = 1 + Math.ceil( this.width * this.bitsPerPixel / 8 ) ;
 	var expectedBufferLength = lineByteLength * this.height ;
@@ -693,7 +693,7 @@ Png.prototype.generateImageData = async function() {
 		this.extractLine( buffer , y * lineByteLength + 1 , lineByteLength - 1 , y * pixelBufferLineByteLength ) ;
 	}
 
-	console.log( "pixelBuffer:" , this.pixelBuffer , this.pixelBuffer.length ) ;
+	//console.log( "pixelBuffer:" , this.pixelBuffer , this.pixelBuffer.length ) ;
 } ;
 
 

@@ -1,6 +1,6 @@
 {
   "name": "portable-image-png",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Lightweight PNG loader/saver written from scratch, supporting palette/indexed mode (keeping palette and index informations).",
   "main": "lib/Png.js",
   "directories": {
