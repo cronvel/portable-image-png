@@ -1,6 +1,6 @@
 {
   "name": "portable-image-png",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Lightweight PNG loader/saver written from scratch, supporting palette/indexed mode (keeping palette and index informations).",
   "main": "lib/Png.js",
   "directories": {
@@ -8,8 +8,10 @@
   },
   "dependencies": {
     "crc-32": "^1.2.2",
-    "portable-image": "^0.0.2",
     "stream-kit": "^0.5.4"
+  },
+  "peerDependencies": {
+    "portable-image": "^0.0.2"
   },
   "scripts": {
     "test": "tea-time -R dot"

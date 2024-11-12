@@ -1,7 +1,7 @@
 /*
-	SVG Kit
+	Portable Image Png
 
-	Copyright (c) 2017 - 2024 Cédric Ronvel
+	Copyright (c) 2024 Cédric Ronvel
 
 	The MIT License (MIT)
 
@@ -29,7 +29,7 @@
 
 
 const Png = PortableImagePng ;
-//const PortableImage = PixPal.PortableImage ;
+const PortableImage = Png.PortableImage ;
 
 
 

@@ -16,3 +16,9 @@ Also the lib uses the **CompressionStream API** (available both in Node.js and b
 For instance the lib does not support Adam7 interlacing mode.
 The encoder is straightforward thus does not try to optimize for size.
 
+
+
+## Browser builds
+
+Browser builds can be found inside the `browser/` directory, `Png.js` and `Png.min.js` only contains the Png lib without `PortableImage`,
+while `PortableImagePng.js` and `PortableImagePng.min.js` have it.

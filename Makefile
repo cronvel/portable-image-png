@@ -17,7 +17,7 @@ dev-install: log/npm-dev-install.log
 build: browser
 
 # Build the browser lib
-browser: browser/PortableImagePng.js browser/PortableImagePng.min.js
+browser: browser/PortableImagePng.js browser/PortableImagePng.min.js browser/Png.js browser/Png.min.js
 
 # Build only the non-minified browser lib
 dev-browser: browser/PortableImagePng.js
@@ -58,6 +58,14 @@ browser/PortableImagePng.js: lib/*.js
 # Build the browser minified lib
 browser/PortableImagePng.min.js: browser/PortableImagePng.js
 	${UGLIFY} browser/PortableImagePng.js -o browser/PortableImagePng.min.js -m
+
+# Build the browser lib
+browser/Png.js: lib/*.js
+	${BROWSERIFY} lib/Png.js -i fs -i image-size -i portable-image -s PortableImagePng -o browser/Png.js
+
+# Build the browser minified lib
+browser/Png.min.js: browser/PortableImagePng.js
+	${UGLIFY} browser/Png.js -o browser/Png.min.js -m
 
 # JsHint STDOUT test
 log/jshint.log: log/npm-dev-install.log lib/*.js test/*.js

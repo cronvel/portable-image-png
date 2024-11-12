@@ -1,5 +1,5 @@
 /*
-	PixPal
+	Portable Image Png
 
 	Copyright (c) 2024 Cédric Ronvel
 
