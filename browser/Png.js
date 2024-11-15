@@ -1234,7 +1234,7 @@ SequentialReadBuffer.prototype.readLps16LEString = function( encoding = 'latin1'
 	return this.readString( byteLength , encoding ) ;
 } ;
 
-SequentialReadBuffer.prototype.readLps16LEString = function() { return this.readLps16LEString( 'utf8' ) ; } ;
+SequentialReadBuffer.prototype.readLps16LEUtf8 = function() { return this.readLps16LEString( 'utf8' ) ; } ;
 
 
 
@@ -1253,7 +1253,7 @@ SequentialReadBuffer.prototype.readLps32LEString = function( encoding = 'latin1'
 	return this.readString( byteLength , encoding ) ;
 } ;
 
-SequentialReadBuffer.prototype.readLps32LEString = function() { return this.readLps32LEString( 'utf8' ) ; } ;
+SequentialReadBuffer.prototype.readLps32LEUtf8 = function() { return this.readLps32LEString( 'utf8' ) ; } ;
 
 
 
