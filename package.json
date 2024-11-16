@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "crc-32": "^1.2.2",
-    "stream-kit": "^0.6.1"
+    "stream-kit": "^0.6.2"
   },
   "peerDependencies": {
     "portable-image": "^0.0.2"
