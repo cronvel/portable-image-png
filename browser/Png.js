@@ -223,7 +223,7 @@ Png.decodeImage = function( buffer , options = {} ) {
 
 
 
-Png.prototype.toImage = function( PortableImageClass = PortableImage ) {
+Png.prototype.toImage = function( ImageClass = PortableImage.Image ) {
 	var params = {
 		width: this.width ,
 		height: this.height ,
@@ -232,10 +232,10 @@ Png.prototype.toImage = function( PortableImageClass = PortableImage ) {
 
 	switch ( this.colorType ) {
 		case Png.COLOR_TYPE_RGB :
-			params.channels = PortableImageClass.RGB ;
+			params.channels = ImageClass.ChannelDef.RGB ;
 			break ;
 		case Png.COLOR_TYPE_RGBA :
-			params.channels = PortableImageClass.RGBA ;
+			params.channels = ImageClass.ChannelDef.RGBA ;
 			break ;
 		case Png.COLOR_TYPE_GRAYSCALE :
 			params.channels = [ 'gray' ] ;
@@ -246,11 +246,11 @@ Png.prototype.toImage = function( PortableImageClass = PortableImage ) {
 		case Png.COLOR_TYPE_INDEXED :
 			params.indexed = true ;
 			params.palette = this.palette ;
-			params.channels = PortableImageClass.RGBA ;
+			params.channels = ImageClass.ChannelDef.RGBA ;
 			break ;
 	}
 
-	return new PortableImageClass( params ) ;
+	return new ImageClass( params ) ;
 } ;
 
 
@@ -312,7 +312,7 @@ Png.prototype.decode = async function( buffer , options = {} ) {
 
 Png.prototype.decodeImage = async function( buffer , options = {} ) {
 	await this.decode( buffer , options ) ;
-	return this.toImage( options.PortableImage ) ;
+	return this.toImage( options.Image ) ;
 } ;
 
 
@@ -324,8 +324,8 @@ Png.prototype.save = async function( url , options = {} ) {
 
 
 
-Png.saveImage = async function( url , portableImage , options = {} ) {
-	var png = Png.fromImage( portableImage ) ;
+Png.saveImage = async function( url , image , options = {} ) {
+	var png = Png.fromImage( image ) ;
 	var buffer = await png.encode( options ) ;
 	await saveFileAsync( url , buffer ) ;
 } ;
@@ -339,31 +339,31 @@ Png.prototype.download = async function( filename , options = {} ) {
 
 
 
-Png.fromImage = function( portableImage ) {
+Png.fromImage = function( image ) {
 	var params = {
-		width: portableImage.width ,
-		height: portableImage.height ,
-		pixelBuffer: portableImage.pixelBuffer
+		width: image.width ,
+		height: image.height ,
+		pixelBuffer: image.pixelBuffer
 	} ;
 
-	if ( ! portableImage.isRgb && ! portableImage.isRgba && ! portableImage.isGray && ! portableImage.isGrayAlpha ) {
+	if ( ! image.isRgb && ! image.isRgba && ! image.isGray && ! image.isGrayAlpha ) {
 		throw new Error( "The image is not supported, RGB, RGBA, Gray, or Gray+Alpha channels are required" ) ;
 	}
 
-	if ( portableImage.indexed ) {
+	if ( image.indexed ) {
 		params.colorType = Png.COLOR_TYPE_INDEXED ;
-		params.palette = portableImage.palette ;
+		params.palette = image.palette ;
 	}
-	else if ( portableImage.isRgba ) {
+	else if ( image.isRgba ) {
 		params.colorType = Png.COLOR_TYPE_RGBA ;
 	}
-	else if ( portableImage.isRgb ) {
+	else if ( image.isRgb ) {
 		params.colorType = Png.COLOR_TYPE_RGB ;
 	}
-	else if ( portableImage.isGrayAlpha ) {
+	else if ( image.isGrayAlpha ) {
 		params.colorType = Png.COLOR_TYPE_GRAYSCALE_ALPHA ;
 	}
-	else if ( portableImage.isGray ) {
+	else if ( image.isGray ) {
 		params.colorType = Png.COLOR_TYPE_GRAYSCALE ;
 	}
 
@@ -1027,9 +1027,12 @@ SequentialReadBuffer.prototype.skip = function( byteLength ) {
 
 
 
+// If byteLength=-1, read the remaining bytes
 SequentialReadBuffer.prototype.readBuffer = function( byteLength , view = false ) {
 	this.remainingBits = this.currentBitByte = 0 ;
 	var buffer ;
+
+	if ( byteLength === - 1 ) { byteLength = this.buffer.length - this.ptr ; }
 
 	if ( view ) {
 		buffer = this.buffer.slice( this.ptr , this.ptr + byteLength ) ;
@@ -1042,6 +1045,8 @@ SequentialReadBuffer.prototype.readBuffer = function( byteLength , view = false 
 	this.ptr += byteLength ;
 	return buffer ;
 } ;
+
+SequentialReadBuffer.prototype.readBufferView = function( byteLength ) { return this.readBuffer( byteLength , true ) ; } ;
 
 
 
